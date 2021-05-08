@@ -1,13 +1,20 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { DropdownItems, MultiSelectWrapper, InputItem, InputItems } from "./";
+import {
+  DropdownItems,
+  MultiSelectWrapper,
+  InputItem,
+  InputItems,
+  Input,
+} from "./";
 import { initialState } from "./initialState";
 import { swapArrayEl } from "./helper";
 
 export default function MultiSelect({ items }) {
   const [state, setState] = useState({ ...initialState });
-  const { placeholder, focused, dropdownItems, inputItems } = state;
+  const { placeholder, focused, dropdownItems, inputItems, inputValue } = state;
   const hasInputItems = !!inputItems.length;
+  const inputPlaceholder = hasInputItems ? "" : placeholder;
 
   useEffect(() => {
     setState((prevState) => ({
@@ -66,12 +73,20 @@ export default function MultiSelect({ items }) {
     });
   };
 
+  const onInputChange = ({ target: { value } }) => {
+    setState((prevState) => ({
+      ...prevState,
+      inputValue: value,
+    }));
+  };
+
   return (
     <MultiSelectWrapper>
-      <input
-        onBlur={onBlur}
-        placeholder={hasInputItems ? "" : placeholder}
+      <Input
+        onChange={onInputChange}
         onFocus={onFocus}
+        onBlur={onBlur}
+        placeholder={inputPlaceholder}
       />
       {hasInputItems && (
         <InputItems
@@ -83,6 +98,7 @@ export default function MultiSelect({ items }) {
         <>
           <i className="fas fa-caret-down"></i>
           <DropdownItems
+            inputValue={inputValue}
             onDropdownItemClick={onDropdownItemClick}
             dropdownItems={dropdownItems}
           />

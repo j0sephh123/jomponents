@@ -3,7 +3,6 @@ export function swapArrayEl(arrayToRemoveFrom, arrayToAddTo, el) {
 
   const filteredArrayToRemoveFrom = arrayToRemoveFrom.filter((item) => {
     const bool = item.value !== el.value;
-    console.log(bool);
 
     if (!bool) {
       arrayToAddCopy.push(el);

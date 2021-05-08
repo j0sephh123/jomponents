@@ -3,4 +3,5 @@ export const initialState = {
   focused: false,
   dropdownItems: [],
   inputItems: [],
+  inputValue: "",
 };
