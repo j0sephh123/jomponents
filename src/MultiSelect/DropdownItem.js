@@ -1,11 +1,9 @@
-const DropdownItem = ({ item, onDropdownItemClick }) => {
-  const { label, value } = item;
+export default function DropdownItem ({ dropdownItem, onDropdownItemClick }) {
+  const { label, value } = dropdownItem;
 
   return (
-    <div onClick={() => onDropdownItemClick(value)} className="dropdownItem">
+    <div onClick={() => onDropdownItemClick(dropdownItem)} className="dropdownItem">
       {label}
     </div>
   );
 };
-
-export default DropdownItem;

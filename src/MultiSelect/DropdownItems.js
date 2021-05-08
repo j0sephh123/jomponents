@@ -1,21 +1,15 @@
 import DropdownItem from "./DropdownItem";
 
-const DropdownItems = ({ items }) => {
-  const onDropdownItemClick = (value) => {
-    console.log(value);
-  };
-
+export default function DropdownItems({ onDropdownItemClick, dropdownItems }) {
   return (
     <div className="dropdownItems">
-      {items.map((item, index) => (
+      {dropdownItems.map((dropdownItem, index) => (
         <DropdownItem
           onDropdownItemClick={onDropdownItemClick}
           key={index}
-          item={item}
+          dropdownItem={dropdownItem}
         />
       ))}
     </div>
   );
-};
-
-export default DropdownItems;
+}

@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export default styled.div({
   position: "relative",
@@ -17,6 +17,21 @@ export default styled.div({
     position: "absolute",
     right: "0",
     top: "17px",
+  },
+  ".inputItems": {
+    position: "absolute",
+    top: "16px",
+    left: "10px",
+    display: "flex",
+    ".inputItem": {
+      background: "gainsboro",
+      padding: "8px",
+      borderRadius: "8px",
+      cursor: "pointer",
+      "&:hover": {
+        backgroundColor: "#bcbcbc",
+      },
+    },
   },
   ".dropdownItems": {
     marginTop: "1px",
