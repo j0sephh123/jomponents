@@ -12,7 +12,14 @@ import { swapArrayEl } from "./helper";
 
 export default function MultiSelect({ items }) {
   const [state, setState] = useState({ ...initialState });
-  const { placeholder, focused, dropdownItems, inputItems, inputValue } = state;
+  const {
+    placeholder,
+    focused,
+    dropdownItems,
+    inputItems,
+    inputValue,
+    filteredDropdownItems,
+  } = state;
   const hasInputItems = !!inputItems.length;
   const inputPlaceholder = hasInputItems ? "" : placeholder;
 
@@ -80,6 +87,18 @@ export default function MultiSelect({ items }) {
     }));
   };
 
+  useEffect(() => {
+    setState((prevState) => ({
+      ...prevState,
+      filteredDropdownItems: inputValue
+        ? prevState.dropdownItems.filter(
+            ({ label }) =>
+              label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
+          )
+        : [...prevState.dropdownItems],
+    }));
+  }, [inputValue]);
+
   return (
     <MultiSelectWrapper>
       <Input
@@ -100,7 +119,7 @@ export default function MultiSelect({ items }) {
           <DropdownItems
             inputValue={inputValue}
             onDropdownItemClick={onDropdownItemClick}
-            dropdownItems={dropdownItems}
+            dropdownItems={filteredDropdownItems}
           />
         </>
       )}

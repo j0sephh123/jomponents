@@ -4,4 +4,5 @@ export const initialState = {
   dropdownItems: [],
   inputItems: [],
   inputValue: "",
+  filteredDropdownItems: [],
 };
