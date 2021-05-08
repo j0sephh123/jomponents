@@ -1,23 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
+import MultiSelect from "./MultiSelect/MultiSelect";
+
+const items = [
+  {label: "Red", value: "red"},
+  {label: "Yellow", value: "yellow"},
+  {label: "Blue", value: "blue"},
+  {label: "Orange", value: "orange"},
+];
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <MultiSelect items={items} />
     </div>
   );
 }
