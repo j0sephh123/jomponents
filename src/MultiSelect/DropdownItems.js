@@ -1,17 +1,11 @@
 import DropdownItem from "./DropdownItem";
 
-export default function DropdownItems({
-  inputValue,
-  onDropdownItemClick,
-  dropdownItems,
-}) {
-
-
+export default function DropdownItems({ dropdownItems, ...rest }) {
   return (
     <div className="dropdownItems">
       {dropdownItems.map((dropdownItem, index) => (
         <DropdownItem
-          onDropdownItemClick={onDropdownItemClick}
+          {...rest}
           key={index}
           dropdownItem={dropdownItem}
         />

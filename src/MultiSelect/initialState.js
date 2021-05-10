@@ -6,4 +6,5 @@ export const initialState = {
   inputItems: [],
   inputValue: "",
   filteredDropdownItems: [],
+  hoveredItem: null,
 };

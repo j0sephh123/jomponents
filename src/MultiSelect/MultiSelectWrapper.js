@@ -54,6 +54,9 @@ export default styled.div({
       "&:hover": {
         backgroundColor: "aliceblue",
       },
+      "&.hovered": {
+        backgroundColor: "lightblue",
+      },
     },
   },
 });

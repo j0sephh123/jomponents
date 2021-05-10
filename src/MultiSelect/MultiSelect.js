@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import {
   DropdownItems,
+  DropdownItem,
   MultiSelectWrapper,
   InputItem,
   InputItems,
   Input,
 } from "./";
 import { initialState } from "./initialState";
-import { swapArrayEl, placeholderText } from "./helper";
+import { swapArrayEl, timeout, setNext } from "./helper";
 
 export default function MultiSelect({ items }) {
   const [state, setState] = useState({ ...initialState });
@@ -20,9 +21,11 @@ export default function MultiSelect({ items }) {
     inputValue,
     filteredDropdownItems,
     selectFromListPlaceholder,
+    hoveredItem,
   } = state;
   const hasInputItems = !!inputItems.length;
   const showDropdownItems = focused && !!filteredDropdownItems.length;
+  const showNoItemsFound = focused && !filteredDropdownItems.length;
 
   const inputPlaceholder = hasInputItems ? "" : placeholder;
 
@@ -42,13 +45,12 @@ export default function MultiSelect({ items }) {
   };
 
   const onBlur = async () => {
-    setTimeout(() => {
-      setState((prevState) => ({
-        ...prevState,
-        placeholder: initialState.placeholder,
-        focused: false,
-      }));
-    }, 200);
+    await timeout(250);
+    setState((prevState) => ({
+      ...prevState,
+      placeholder: initialState.placeholder,
+      focused: false,
+    }));
   };
 
   const onDropdownItemClick = (dropdownItem) => {
@@ -90,6 +92,15 @@ export default function MultiSelect({ items }) {
     }));
   };
 
+  const onKeyDown = ({ code }) => {
+    const nextIndex = setNext(dropdownItems, code, hoveredItem);
+
+    setState((prevState) => ({
+      ...prevState,
+      hoveredItem: dropdownItems[nextIndex]["value"],
+    }));
+  };
+
   useEffect(() => {
     setState((prevState) => ({
       ...prevState,
@@ -110,6 +121,7 @@ export default function MultiSelect({ items }) {
   return (
     <MultiSelectWrapper>
       <Input
+        onKeyDown={onKeyDown}
         onChange={onInputChange}
         onFocus={onFocus}
         onBlur={onBlur}
@@ -125,12 +137,14 @@ export default function MultiSelect({ items }) {
         <>
           <i className="fas fa-caret-down"></i>
           <DropdownItems
+            hoveredItem={hoveredItem}
             inputValue={inputValue}
             onDropdownItemClick={onDropdownItemClick}
             dropdownItems={filteredDropdownItems}
           />
         </>
       )}
+      {showNoItemsFound ? "No items found" : ""}
     </MultiSelectWrapper>
   );
 }
