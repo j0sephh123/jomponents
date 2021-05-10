@@ -18,14 +18,18 @@ export default styled.div({
     right: "0",
     top: "17px",
   },
+  ".fa-times": {
+    marginLeft: ".6rem",
+  },
   ".inputItems": {
     position: "absolute",
-    top: "16px",
+    top: "8px",
     left: "10px",
     display: "flex",
     ".inputItem": {
       background: "gainsboro",
       padding: "8px",
+      margin: "0 4px",
       borderRadius: "8px",
       cursor: "pointer",
       "&:hover": {

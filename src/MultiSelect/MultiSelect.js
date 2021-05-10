@@ -8,7 +8,7 @@ import {
   Input,
 } from "./";
 import { initialState } from "./initialState";
-import { swapArrayEl } from "./helper";
+import { swapArrayEl, placeholderText } from "./helper";
 
 export default function MultiSelect({ items }) {
   const [state, setState] = useState({ ...initialState });
@@ -19,8 +19,11 @@ export default function MultiSelect({ items }) {
     inputItems,
     inputValue,
     filteredDropdownItems,
+    selectFromListPlaceholder,
   } = state;
   const hasInputItems = !!inputItems.length;
+  const showDropdownItems = focused && !!filteredDropdownItems.length;
+
   const inputPlaceholder = hasInputItems ? "" : placeholder;
 
   useEffect(() => {
@@ -90,14 +93,19 @@ export default function MultiSelect({ items }) {
   useEffect(() => {
     setState((prevState) => ({
       ...prevState,
-      filteredDropdownItems: inputValue
-        ? prevState.dropdownItems.filter(
-            ({ label }) =>
-              label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
-          )
-        : [...prevState.dropdownItems],
+      filteredDropdownItems: prevState.dropdownItems.filter((dropdownItem) => {
+        if (!inputValue) {
+          return true;
+        }
+
+        const inputMatch =
+          dropdownItem.label.toLowerCase().indexOf(inputValue.toLowerCase()) >
+          -1;
+
+        return inputMatch;
+      }),
     }));
-  }, [inputValue]);
+  }, [inputValue, focused]);
 
   return (
     <MultiSelectWrapper>
@@ -113,7 +121,7 @@ export default function MultiSelect({ items }) {
           inputItems={inputItems}
         />
       )}
-      {focused && (
+      {showDropdownItems && (
         <>
           <i className="fas fa-caret-down"></i>
           <DropdownItems
