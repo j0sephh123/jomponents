@@ -5,7 +5,7 @@ export default function DropdownItem({
 }) {
   const { label, value } = dropdownItem;
 
-  const isHovered = hoveredItem === value;
+  const isHovered = hoveredItem && hoveredItem["value"] === value;
 
   return (
     <div

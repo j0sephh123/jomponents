@@ -1,3 +1,31 @@
+import { keyCodes } from "./constants";
+
+export function addElement(prevState, item) {
+  const { filteredArrayToRemoveFrom, arrayToAddCopy } = swapArrayEl(
+    prevState.dropdownItems,
+    prevState.inputItems,
+    item
+  );
+
+  return {
+    dropdownItems: filteredArrayToRemoveFrom,
+    inputItems: arrayToAddCopy,
+  };
+}
+
+export function removeElement(prevState, item) {
+  const { filteredArrayToRemoveFrom, arrayToAddCopy } = swapArrayEl(
+    prevState.inputItems,
+    prevState.dropdownItems,
+    item
+  );
+
+  return {
+    dropdownItems: arrayToAddCopy,
+    inputItems: filteredArrayToRemoveFrom,
+  };
+}
+
 export function swapArrayEl(arrayToRemoveFrom, arrayToAddTo, el) {
   const arrayToAddCopy = [...arrayToAddTo];
 
@@ -21,25 +49,18 @@ export const timeout = (ms) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
 const incrementOrDecrement = (v, code) =>
-  code === "ArrowDown" ? v + 1 : v - 1;
+  code === keyCodes.ArrowDown ? v + 1 : v - 1;
 
-export const setNext = (dropdownItems, code, hoveredItem) => {
-  const isArrowDown = code === "ArrowDown";
+export const setNext = (currentIndex, dropdownItems, code, hoveredItem) => {
+  const isArrowDown = code === keyCodes.ArrowDown;
 
-  const currentIndex = dropdownItems.findIndex(
-    ({ value }) => value === hoveredItem
-  );
-  // 0
   const lastIndex = isArrowDown ? dropdownItems.length : -1;
 
-  // currentIndex - 1
   let nextIndex = incrementOrDecrement(currentIndex, code);
 
   if (nextIndex === lastIndex || !hoveredItem) {
-    // prevState.dropdownItems.length
     nextIndex = isArrowDown ? 0 : dropdownItems.length - 1;
   }
 
   return nextIndex;
-  // return code === "ArrowDown" ? currentIndex - 1 : currentIndex + 1;
 };

@@ -9,7 +9,8 @@ import {
   Input,
 } from "./";
 import { initialState } from "./initialState";
-import { swapArrayEl, timeout, setNext } from "./helper";
+import { timeout, setNext, addElement, removeElement } from "./helper";
+import { keyCodes } from "./constants";
 
 export default function MultiSelect({ items }) {
   const [state, setState] = useState({ ...initialState });
@@ -53,36 +54,18 @@ export default function MultiSelect({ items }) {
     }));
   };
 
-  const onDropdownItemClick = (dropdownItem) => {
-    setState((prevState) => {
-      const { filteredArrayToRemoveFrom, arrayToAddCopy } = swapArrayEl(
-        prevState.dropdownItems,
-        prevState.inputItems,
-        dropdownItem
-      );
-
-      return {
-        ...prevState,
-        dropdownItems: filteredArrayToRemoveFrom,
-        inputItems: arrayToAddCopy,
-      };
-    });
+  const onDropdownItemClick = (item) => {
+    setState((prevState) => ({
+      ...prevState,
+      ...addElement(prevState, item),
+    }));
   };
 
-  const onInputItemClick = (inputItem) => {
-    setState((prevState) => {
-      const { filteredArrayToRemoveFrom, arrayToAddCopy } = swapArrayEl(
-        prevState.inputItems,
-        prevState.dropdownItems,
-        inputItem
-      );
-
-      return {
-        ...prevState,
-        dropdownItems: arrayToAddCopy,
-        inputItems: filteredArrayToRemoveFrom,
-      };
-    });
+  const onInputItemClick = (item) => {
+    setState((prevState) => ({
+      ...prevState,
+      ...removeElement(prevState, item),
+    }));
   };
 
   const onInputChange = ({ target: { value } }) => {
@@ -93,11 +76,30 @@ export default function MultiSelect({ items }) {
   };
 
   const onKeyDown = ({ code }) => {
-    const nextIndex = setNext(dropdownItems, code, hoveredItem);
+    const currentIndex = dropdownItems.findIndex(({ value }) => {
+      if (!hoveredItem) {
+        return false;
+      }
+      return value === hoveredItem["value"];
+    });
+    const isEnter = code === keyCodes.Enter || code === keyCodes.NumpadEnter;
+    const isEscape = code === keyCodes.Escape;
+
+    if (isEnter && hoveredItem) {
+      return onDropdownItemClick(hoveredItem);
+    } else if (isEscape && hoveredItem) {
+      return setState((prevState) => ({
+        ...prevState,
+        hoveredItem: null,
+        focused: false,
+      }));
+    }
+
+    const nextIndex = setNext(currentIndex, dropdownItems, code, hoveredItem);
 
     setState((prevState) => ({
       ...prevState,
-      hoveredItem: dropdownItems[nextIndex]["value"],
+      hoveredItem: dropdownItems[nextIndex],
     }));
   };
 
@@ -116,7 +118,15 @@ export default function MultiSelect({ items }) {
         return inputMatch;
       }),
     }));
-  }, [inputValue, focused]);
+  }, [inputValue, focused, dropdownItems.length]);
+
+  useEffect(() => {
+    setState((prevState) => ({
+      ...prevState,
+      hoveredItem: null,
+    }));
+    console.log({ dropdownItems });
+  }, [dropdownItems.length]);
 
   return (
     <MultiSelectWrapper>
