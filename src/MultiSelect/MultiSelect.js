@@ -1,13 +1,5 @@
 import { useState, useEffect } from "react";
-import styled from "styled-components";
-import {
-  DropdownItems,
-  DropdownItem,
-  MultiSelectWrapper,
-  InputItem,
-  InputItems,
-  Input,
-} from "./";
+import { DropdownItems, MultiSelectWrapper, InputItems, Input } from "./";
 import { initialState } from "./initialState";
 import { timeout, setNext, addElement, removeElement } from "./helper";
 import { keyCodes } from "./constants";
@@ -21,7 +13,6 @@ export default function MultiSelect({ items }) {
     inputItems,
     inputValue,
     filteredDropdownItems,
-    selectFromListPlaceholder,
     hoveredItem,
   } = state;
   const hasInputItems = !!inputItems.length;
