@@ -1,6 +1,6 @@
 import MultiSelect from "./MultiSelect/MultiSelect";
 
-const items = [
+export const dropdownItems = [
   { label: "Red", value: "red" },
   { label: "Yellow", value: "yellow" },
   { label: "Blue", value: "blue" },
@@ -13,7 +13,7 @@ const items = [
 function App() {
   return (
     <div className="container">
-      <MultiSelect items={items} />
+      <MultiSelect focused={false} dropdownItems={dropdownItems} />
     </div>
   );
 }

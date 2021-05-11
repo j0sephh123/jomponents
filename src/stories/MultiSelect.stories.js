@@ -1,14 +1,5 @@
 import MultiSelect from "../MultiSelect/MultiSelect";
-
-const items = [
-  { label: "Red", value: "red" },
-  { label: "Yellow", value: "yellow" },
-  { label: "Blue", value: "blue" },
-  { label: "Orange", value: "orange" },
-  { label: "Purple", value: "purple" },
-  { label: "White", value: "white" },
-  { label: "Black", value: "black" },
-];
+import { dropdownItems } from "../App";
 
 export default {
   title: "MultiSelect",
@@ -19,5 +10,19 @@ const Template = (args) => <MultiSelect {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {
-  items,
+  dropdownItems,
+  focused: false,
+};
+
+export const Focused = Template.bind({});
+Focused.args = {
+  dropdownItems,
+  focused: true,
+};
+
+export const WithInput = Template.bind({});
+WithInput.args = {
+  dropdownItems,
+  focused: true,
+  inputValue: "red",
 };

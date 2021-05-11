@@ -4,8 +4,31 @@ import { initialState } from "./initialState";
 import { timeout, setNext, addElement, removeElement } from "./helper";
 import { keyCodes } from "./constants";
 
-export default function MultiSelect({ items }) {
-  const [state, setState] = useState({ ...initialState });
+// export const initialState = {
+//   placeholder: "Click to list of elements",
+//   selectFromListPlaceholder: "Select from the list",
+//   focused: false,
+//   dropdownItems: [],
+//   inputItems: [],
+//   inputValue: "",
+//   filteredDropdownItems: [],
+//   hoveredItem: null,
+// };
+
+export default function MultiSelect(props) {
+  console.log(props);
+  const [state, setState] = useState({
+    ...initialState,
+    ...props,
+  });
+
+  useEffect(() => {
+    setState((prevState) => ({
+      ...prevState,
+      props,
+    }));
+  }, [props]);
+
   const {
     placeholder,
     focused,
@@ -20,13 +43,6 @@ export default function MultiSelect({ items }) {
   const showNoItemsFound = focused && !filteredDropdownItems.length;
 
   const inputPlaceholder = hasInputItems ? "" : placeholder;
-
-  useEffect(() => {
-    setState((prevState) => ({
-      ...prevState,
-      dropdownItems: items,
-    }));
-  }, [items]);
 
   const onFocus = () => {
     setState((prevState) => ({
@@ -116,7 +132,6 @@ export default function MultiSelect({ items }) {
       ...prevState,
       hoveredItem: null,
     }));
-    console.log({ dropdownItems });
   }, [dropdownItems.length]);
 
   return (
